@@ -1,0 +1,5 @@
+﻿Creating blazor project
+Intro to components
+Routing
+Dependency Injection
+Get appsettings value

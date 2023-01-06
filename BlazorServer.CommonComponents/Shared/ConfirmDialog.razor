@@ -1,0 +1,59 @@
+﻿@inject ConfirmDialogHelper _confirmDialogHelper;
+
+@if (IsVisible)
+{
+    <div class="modal-backdrop fade show" style="z-index:12"></div>
+    <div class="modal fade show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="padding-bottom: .25rem;padding-top: .25rem;">
+                    <h6 class="modal-title" id="exampleModalLabel">Confirmation</h6>
+                </div>
+                <div class="modal-body">
+                    <div style="margin-top: 15px;">
+                        @Message
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary"
+                        @onclick="OnOkClick">
+                        OK
+                    </button>
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal"
+                        @onclick="OnCancelClick">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private bool IsVisible { get; set; }
+    private string Message { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _confirmDialogHelper.OnShow += ShowDialoag;
+    }
+
+    private void ShowDialoag(string message)
+    {
+        Message = message;
+        IsVisible = true;
+        StateHasChanged();
+    }
+
+    private void OnOkClick()
+    {
+        IsVisible = false;
+        _confirmDialogHelper.SubmitYes();
+    }
+
+    private void OnCancelClick()
+    {
+        IsVisible = false;
+    }
+}

@@ -1,0 +1,43 @@
+﻿<EditForm Model="@UserControlModel" OnValidSubmit="@Click">
+    <FluentValidationValidator></FluentValidationValidator>
+    <div class="form-group">
+        <label>First name</label>
+        <input type="text" @bind="UserControlModel.FirstName" />
+        <ValidationMessage For="@(()=> UserControlModel.FirstName)"></ValidationMessage>
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Last name</label>
+        <input type="text" @bind="UserControlModel.LastName" />
+        <ValidationMessage For="@(()=> UserControlModel.LastName)"></ValidationMessage>
+    </div>
+    <br />
+    <div class="form-group">
+        <button type="submit">Show Name</button>
+    </div>
+</EditForm>
+
+
+@code {
+    [Parameter] public EventCallback<string> OnShowName { get; set; }
+    [Inject] public ConfirmDialogHelper ConfirmDialog { get; set; }
+
+    public UserControlModel UserControlModel { get; set; } = new UserControlModel();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        ConfirmDialog.OnSubmitYes += OnSubmitYes;
+    }
+
+    void OnSubmitYes()
+    {
+        if (OnShowName.HasDelegate)
+            OnShowName.InvokeAsync($"{UserControlModel.FirstName} {UserControlModel.LastName}");
+    }
+
+    protected void Click()
+    {
+        ConfirmDialog.Show("Continue?");
+    }
+}

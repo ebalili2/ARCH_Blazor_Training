@@ -1,0 +1,14 @@
+﻿@page "/"
+
+<div class="form-group">
+    <button type="button" @onclick="Click">Show Alert</button>
+</div>
+
+@code{
+    [Inject] protected IJSRuntime jSRuntime { get; set; }
+
+    public async Task Click()
+    {
+        await jSRuntime.ShowAlertMessage("Alert Shown");
+    }
+}

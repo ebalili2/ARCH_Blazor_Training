@@ -1,0 +1,26 @@
+﻿<div class="form-group">
+    <label>First name</label>
+    <input type="text" @bind="FirstName" />
+</div>
+<br />
+<div class="form-group">
+    <label>Last name</label>
+    <input type="text" @bind="LastName" />
+</div>
+<br />
+<div class="form-group">
+    <button type="button" @onclick="Click">Show Name</button>
+</div>
+
+@code {
+    [Parameter] public EventCallback<string> OnShowName { get; set; }
+
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+
+    protected async Task Click()
+    {
+        if (OnShowName.HasDelegate)
+            await OnShowName.InvokeAsync($"{FirstName} {LastName}");
+    }
+}

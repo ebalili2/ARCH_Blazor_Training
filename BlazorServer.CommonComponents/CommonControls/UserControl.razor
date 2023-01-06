@@ -1,0 +1,38 @@
+﻿<div class="form-group">
+    <label>First name</label>
+    <input type="text" @bind="FirstName" />
+</div>
+<br />
+<div class="form-group">
+    <label>Last name</label>
+    <input type="text" @bind="LastName" />
+</div>
+<br />
+<div class="form-group">
+    <button type="button" @onclick="Click">Show Name</button>
+</div>
+
+@code {
+    [Parameter] public EventCallback<string> OnShowName { get; set; }
+    [Inject] public ConfirmDialogHelper ConfirmDialog { get; set; }
+
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        ConfirmDialog.OnSubmitYes += OnSubmitYes;  
+    }
+
+    void OnSubmitYes()
+    {
+        if (OnShowName.HasDelegate)
+            OnShowName.InvokeAsync($"{FirstName} {LastName}");
+    }
+
+    protected void Click()
+    {
+        ConfirmDialog.Show("Continue?");
+    }
+}
